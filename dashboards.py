@@ -6,14 +6,14 @@ st.set_page_config(layout="wide")
 
 df = pd.read_csv("Planilha de Produtos.csv", sep=";", decimal=",")
 
-if "Date" in df.columns:
-    df["Date"] = pd.to_datetime(df["Date"])
+if "Data" in df.columns:
+    df["Data"] = pd.to_datetime(df["Data"])
 else:
-    st.error("A coluna 'Date' não foi encontrada no arquivo CSV.")
+    st.error("A coluna 'Data' não foi encontrada no arquivo CSV.")
     st.stop()
 
-df = df.sort_values("Date")
-df["Month"] = df["Date"].apply(lambda x: f"{x.year}-{x.month:02d}")
+df = df.sort_values("Data")
+df["Month"] = df["Data"].apply(lambda x: f"{x.year}-{x.month:02d}")
 
 month = st.sidebar.selectbox("Mês", df["Month"].unique())
 df_filtered = df[df["Month"] == month]
@@ -21,7 +21,7 @@ df_filtered = df[df["Month"] == month]
 col1, col2 = st.columns(2)
 col3, col4, col5 = st.columns(3)
 
-fig_date = px.bar(df_filtered, x="Date", y="Total", color="City", title="Faturamento por dia")
+fig_date = px.bar(df_filtered, x="Data", y="Total", color="City", title="Faturamento por dia")
 col1.plotly_chart(fig_date, use_container_width=True)
 
 fig_prod = px.bar(df_filtered, x="Product line", y="Total", color="City", title="Faturamento por tipo de produto", orientation="h")
